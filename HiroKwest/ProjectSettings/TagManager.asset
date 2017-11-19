@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Tile
+  - Hero
+  - Enemy
+  - Trap
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -15,8 +19,8 @@ TagManager:
   - 
   - 
   - Tile
-  - 
-  - 
+  - Hero
+  - Enemy
   - 
   - 
   - 
@@ -39,6 +43,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Floor
+    uniqueID: 3025744623
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Enemies
+    uniqueID: 2270307367
+    locked: 0
+  - name: Heroes
+    uniqueID: 3466576351
+    locked: 0
+  - name: Walls
+    uniqueID: 4019215875
     locked: 0

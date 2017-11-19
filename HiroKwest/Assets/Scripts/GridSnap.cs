@@ -13,11 +13,6 @@ public class GridSnap : MonoBehaviour
     public float cell_size = 1f;
     private float x, y, z;
 
-    // Camera distance
-    Vector3 minScreenBounds;
-    Vector3 maxScreenBounds;
-    string distance = "";
-    Vector3 prev_position;
 
     void Start()
     {
@@ -29,18 +24,12 @@ public class GridSnap : MonoBehaviour
     #if (UNITY_EDITOR)
     void Update()
     {
-        if (!Application.isPlaying)
+        if (!Application.isPlaying && this.transform.parent == null)
         {
             x = Mathf.Round(transform.position.x / cell_size) * cell_size;
             y = Mathf.Round(transform.position.y / cell_size) * cell_size;
             z = transform.position.z;
             transform.position = new Vector3(x, y, z);
-
-            if (minScreenBounds == Vector3.zero)
-            {
-                maxScreenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-                minScreenBounds = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0));
-            }
         }
     }
     #endif
