@@ -23,8 +23,6 @@ public class Pathing : MonoBehaviour
 
         Dictionary<Tile, int> tiles_we_can_get_to = new Dictionary<Tile, int>();
 
-        Debug.Log("Getting all nodes we can get to from " + start.transform.position + " in " + max_distance + " steps");
-
         // Already evaluated nodes
         List<Tile> closedSet = new List<Tile>();
         // Currently discovered (adjacent) nodes that are not evaluated yet
@@ -151,7 +149,6 @@ public class Pathing : MonoBehaviour
 
         while (current.cameFrom != null)
         {
-            Debug.Log(current.cameFrom.name);
             current = current.cameFrom;
             total_path.Add(current);
         }

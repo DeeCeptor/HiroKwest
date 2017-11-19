@@ -8,10 +8,12 @@ public class Hero : Unit
     public int Perception = 1;  // How far away they can sense traps & hidden features
 
 
+
     void Start ()
     {
+        unit_card_parent = GraphicsManager.graphics_manager.hero_unit_card_holder;
+        UpdateIndividualCard = true;
         base.Start();
-
 	}
 
 
@@ -21,6 +23,7 @@ public class Hero : Unit
         base.UnitSelected();
     }
 
+    
 
     void Update ()
     {

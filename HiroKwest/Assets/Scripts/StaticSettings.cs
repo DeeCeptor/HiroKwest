@@ -7,6 +7,11 @@ public static class StaticSettings
 {
     public const int ERR_NO_POSSIBLE_PATH = 999;
 
+    public static Color transparent_blue = new Color(0, 0, 1, 0.2f);
+    public static Color transparent_yellow = new Color(1f, 0.9f, 0, 0.2f);
+    public static Color transparent = new Color(0, 0, 0, 0);
+
+
     public static Vector2 TopLeft = new Vector2(-1, 1);
     public static Vector2 TopRight = new Vector2(1, 1);
     public static Vector2 BottomLeft = new Vector2(-1, -1);
@@ -75,18 +80,23 @@ public static class StaticSettings
     }
 
 
-    public static Unit GetClosestUnitTo(List<Unit> units, Tile to)
+
+    public static List<Unit> GetClosestUnitsTo(List<Unit> units, Tile to)
     {
         int closest_distance = 999;
-        Unit closest_unit = null;
+        List<Unit> closest_unit = null;
         foreach (Unit u in units)
         {
             int dist = Pathing.DistanceBetween(u.destination_tile, to);
 
-            if (dist <= closest_distance && dist != StaticSettings.ERR_NO_POSSIBLE_PATH)
+            if (dist < closest_distance && dist != StaticSettings.ERR_NO_POSSIBLE_PATH)
             {
                 closest_distance = dist;
-                closest_unit = u;
+                closest_unit = new List<Unit> { u } ;
+            }
+            else if (dist == closest_distance && dist != StaticSettings.ERR_NO_POSSIBLE_PATH)
+            {
+                closest_unit.Add(u);
             }
         }
         return closest_unit;

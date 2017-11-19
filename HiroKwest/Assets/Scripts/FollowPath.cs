@@ -64,7 +64,6 @@ public class FollowPath : MonoBehaviour
 
         current_path = trail;
         destination_tile = current_path.ToArray()[current_path.Count - 1];
-        Debug.Log(trail.Count);
     }
 
 

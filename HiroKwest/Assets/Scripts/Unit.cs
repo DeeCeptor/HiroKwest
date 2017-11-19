@@ -6,6 +6,7 @@ using UnityEngine;
 public class Unit : FollowPath
 {
     public int Health = 8;
+    public int Max_Health;
     public int Damage = 1;
     public int Armour = 0;  // Temporary Health that regenerates each turn
     public int Current_Armour;
@@ -18,13 +19,21 @@ public class Unit : FollowPath
     public int Actions_per_Turn = 2;
     public bool Not_Their_Turn;
 
-    public Faction owner;
-   
+    public AudioClip death_sound;
 
-    void Start ()
+    public Faction owner;
+    public GameObject unit_card_parent;
+    public bool UpdateIndividualCard = false;
+    public UnitCard unit_card;
+    [TextArea]
+    public string unit_info;
+
+    public override void Start ()
     {
+        Max_Health = Health;
         base.Start();
 
+        CreateUnitCardIfNeeded();
     }
 
 
@@ -51,6 +60,48 @@ public class Unit : FollowPath
         StaticSettings.UnhighlightAllTiles();
         GameState.game_state.current_players_turn.units_with_actions_remaining.Remove(this);
         Active = false;
+    }
+
+
+    public virtual void CreateUnitCardIfNeeded()
+    {
+        // Check if we already have a unit card
+        bool card_already_exists = false;
+        foreach (UnitCard card in this.unit_card_parent.GetComponentsInChildren<UnitCard>())
+        {
+            if (card.unit_name == this.name)
+            {
+                card_already_exists = true;
+                unit_card = card;
+                break;
+            }
+        }
+
+        if (!card_already_exists)
+            CreateUnitCard();
+    }
+    public virtual void CreateUnitCard()
+    {
+        GameObject obj = Instantiate(Resources.Load("UnitCard") as GameObject, unit_card_parent.transform);
+        unit_card = obj.GetComponent<UnitCard>();
+        unit_card.name = this.name;
+        unit_card.unit_name = this.name;
+        unit_card.Profile_image.sprite = this.GetComponent<SpriteRenderer>().sprite;
+        UpdateUnitCard();
+    }
+    public virtual void UpdateUnitCard()
+    {
+        unit_card.Info_text.text = unit_info;
+        unit_card.Health_text.text = (UpdateIndividualCard ? (Health + " / ") : "") + "" + Max_Health;
+        unit_card.Speed_text.text = "" + Speed;
+        unit_card.Damage_text.text = "" + Damage;
+        if (this.Armour <= 0)
+            unit_card.Armour_text.transform.parent.gameObject.SetActive(false);
+        else
+        {
+            unit_card.Armour_text.transform.parent.gameObject.SetActive(true);
+            unit_card.Armour_text.text = (UpdateIndividualCard ? (Current_Armour + " / ") : "") + "" + Armour;
+        }
     }
 
 
@@ -81,15 +132,24 @@ public class Unit : FollowPath
         int modified_damage = incoming_damage - Current_Armour;
         Current_Armour = Mathf.Max(0, Current_Armour - incoming_damage);
 
+
+        GraphicsManager.graphics_manager.GetHitAnimation(modified_damage, this.transform.position);
+
         this.Health -= modified_damage;
         if (Health <= 0)
         {
             Die();
         }
+        else if (UpdateIndividualCard)
+            UpdateUnitCard();
     }
     public void Die()
     {
+        if (UpdateIndividualCard)
+            Destroy(unit_card);
+
         Debug.Log(this.name + " was killed!");
+        GraphicsManager.graphics_manager.PlaySound(death_sound);
         UnitManager.unit_manager.RemoveUnitFromLists(this);
         Destroy(this.gameObject);
     }
@@ -154,7 +214,7 @@ public class Unit : FollowPath
             return;
 
         Dictionary<Tile, int> all_tiles_we_can_move_to = Pathing.BoundedDijkstra(destination_tile, distance);
-        Debug.Log(all_tiles_we_can_move_to.Count + " tiles we could move to");
+
         // Sort through the tiles we can move to
         foreach (KeyValuePair<Tile, int> t in all_tiles_we_can_move_to)
         {
@@ -179,12 +239,12 @@ public class Unit : FollowPath
         foreach (KeyValuePair<Tile, int> t in tiles_we_can_move_to)
         {
             // We can move to this space normally
-            t.Key.GetComponent<SpriteRenderer>().color = Color.blue;
+            t.Key.GetComponent<SpriteRenderer>().color = StaticSettings.transparent_blue;
         }
         foreach (KeyValuePair<Tile, int> t in tiles_we_can_run_to)
         {
             // We can move to these spaces if we run
-            t.Key.GetComponent<SpriteRenderer>().color = Color.yellow;
+            t.Key.GetComponent<SpriteRenderer>().color = StaticSettings.transparent_yellow;
         }
     }
 

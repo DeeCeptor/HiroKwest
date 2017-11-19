@@ -46,7 +46,7 @@ public class Tile : MonoBehaviour
 
     public void UnhighlightThisTile()
     {
-        this.sprite.color = Color.white;
+        this.sprite.color = StaticSettings.transparent;
     }
 
 

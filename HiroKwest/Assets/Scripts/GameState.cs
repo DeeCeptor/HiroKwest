@@ -14,7 +14,13 @@ public class GameState : MonoBehaviour
     List<Faction> factions = new List<Faction>();
     public Faction current_players_turn;
 
+    public Faction Hero_Faction;
+    public Faction Enemy_Faction;
+
+    public GameObject victory_if_destroyed;
+
     public bool waiting = false;
+    public bool game_over = false;
 
 
     private void Awake()
@@ -25,9 +31,11 @@ public class GameState : MonoBehaviour
     {
         Faction player = new HeroManager("Heroes", true, new List<Unit>(GameObject.FindObjectsOfType<Hero>()));
         factions.Add(player);
+        Hero_Faction = player;
 
-        Faction enemies = new EnemyManager("Monsters", false, new List<Unit>(GameObject.FindObjectsOfType<Monster>()));
+        Faction enemies = new EnemyManager("Monsters", false, new List<Unit>());//new List<Unit>(GameObject.FindObjectsOfType<Monster>()));
         factions.Add(enemies);
+        Enemy_Faction = enemies;
 
         StartRound();
     }
@@ -85,16 +93,25 @@ public class GameState : MonoBehaviour
         }
         if (current_players_turn != null)
             current_players_turn.FactionUpdate();
+
+        if (victory_if_destroyed == null)
+            Victory();
     }
 
 
     public void Defeat()
     {
+        if (game_over)
+            return;
 
+        Debug.Log("DEFEAT");
     }
     public void Victory()
     {
+        if (game_over)
+            return;
 
+        Debug.Log("VICTORY");
     }
 
 

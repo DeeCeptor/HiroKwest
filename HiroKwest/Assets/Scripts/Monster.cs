@@ -9,6 +9,13 @@ public class Monster : Unit
     public Dictionary<Unit, List<Tile>> heroes_within_range_this_turn = new Dictionary<Unit, List<Tile>>();
 
 
+    public override void Start()
+    {
+        unit_card_parent = GraphicsManager.graphics_manager.enemy_unit_card_holder;
+
+        base.Start();
+    }
+
     public virtual void PerformAITurn()
     {
         if (Actions_Remaining != Actions_per_Turn)
@@ -79,14 +86,16 @@ public class Monster : Unit
         {
             foreach (Tile neighbour in u.destination_tile.orthogonal_neighbours)
             {
-                if (!neighbour.tile_occupied && !tiles_adjacent_to_heroes.Contains(neighbour))
+                if (!neighbour.tile_occupied)
                 {
+                    Debug.LogError("GetTilesAdjacentToHeroes " + u.name);
                     // Record which tiles are adjacent to which heroes
                     if (!heroes_within_range_this_turn.ContainsKey(u))
                         heroes_within_range_this_turn.Add(u, new List<Tile>());
                     heroes_within_range_this_turn[u].Add(neighbour);
 
-                    tiles_adjacent_to_heroes.Add(neighbour);
+                    if (!tiles_adjacent_to_heroes.Contains(neighbour))
+                        tiles_adjacent_to_heroes.Add(neighbour);
                 }
             }
         }
@@ -130,13 +139,6 @@ public class Monster : Unit
 
     }
 
-
-
-    void Start ()
-    {
-        base.Start();
-	}
-	
 
 	public override void Update ()
     {

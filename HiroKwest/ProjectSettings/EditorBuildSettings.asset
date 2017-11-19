@@ -4,4 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: bf4249a78086b4947b25f63b131e5346
+  - enabled: 1
+    path: Assets/Scenes/TheTrial.unity
+    guid: 1a6d7aa03ad9a3348922fa1f2b22f7e8

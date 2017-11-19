@@ -12,7 +12,26 @@ public class Skeletons : Monster
     {
         base.CanReachHeroes(valid_tiles);
 
-        Unit closest_hero = StaticSettings.GetClosestUnitTo(HeroManager.hero_manager.faction_units, this.destination_tile);
+        // Error comes from when there are multiple heroes adjacent to the same tile
+        // Attack closest valid hero
+        List<Unit> closest_heroes = StaticSettings.GetClosestUnitsTo(HeroManager.hero_manager.faction_units, this.destination_tile);
+        Unit closest_hero = null;
+        foreach (Unit u in closest_heroes)
+        {
+            if (heroes_within_range_this_turn.ContainsKey(u))
+            {
+                closest_hero = u;
+                break;
+            }
+        }
+        if (!heroes_within_range_this_turn.ContainsKey(closest_hero))
+        {
+            Debug.LogError(closest_hero.name + " not in heroeswithinrange " + heroes_within_range_this_turn.Keys.ToString() , this.gameObject);
+            foreach (Unit k in heroes_within_range_this_turn.Keys)
+            {
+                Debug.LogError(k.name);
+            }
+        }
         valid_tiles = heroes_within_range_this_turn[closest_hero];
 
         // Need to change it to use only tiles to closest hero
@@ -31,7 +50,7 @@ public class Skeletons : Monster
         base.CantReachHeroes();
 
         // Get closest hero (u is null for some reason)
-        Unit u = StaticSettings.GetClosestUnitTo(HeroManager.hero_manager.faction_units, this.destination_tile);
+        Unit u = StaticSettings.GetClosestUnitsTo(HeroManager.hero_manager.faction_units, this.destination_tile)[0];
 
         // Move to closest possible tile of the closest hero
         Tile dest = StaticSettings.ClosestAdjacentTileTo(this.destination_tile, u.destination_tile);
@@ -43,7 +62,7 @@ public class Skeletons : Monster
 
     public override Unit DecideTarget()
     {
-        return StaticSettings.GetClosestUnitTo(HeroManager.hero_manager.faction_units, this.destination_tile);
+        return StaticSettings.GetClosestUnitsTo(HeroManager.hero_manager.faction_units, this.destination_tile)[0];
     }
 
 

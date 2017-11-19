@@ -27,7 +27,7 @@ public class Mummy : Monster
         base.CantReachHeroes();
 
         // Get closest hero
-        Unit u = StaticSettings.GetClosestUnitTo(HeroManager.hero_manager.faction_units, this.destination_tile);
+        Unit u = StaticSettings.GetClosestUnitsTo(HeroManager.hero_manager.faction_units, this.destination_tile)[0];
 
         // Paralyse the closest hero
 
@@ -42,7 +42,7 @@ public class Mummy : Monster
 
     public override Unit DecideTarget()
     {
-        return StaticSettings.GetClosestUnitTo(HeroManager.hero_manager.faction_units, this.destination_tile);
+        return StaticSettings.GetClosestUnitsTo(HeroManager.hero_manager.faction_units, this.destination_tile)[0];
     }
 
 

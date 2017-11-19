@@ -27,7 +27,7 @@ public class Zombie : Monster
         base.CantReachHeroes();
 
         // Get closest hero
-        Unit u = StaticSettings.GetClosestUnitTo(HeroManager.hero_manager.faction_units, this.destination_tile);
+        Unit u = StaticSettings.GetClosestUnitsTo(HeroManager.hero_manager.faction_units, this.destination_tile)[0];
 
         // Move to closest possible tile of the closest hero
         Tile dest = StaticSettings.ClosestAdjacentTileTo(this.destination_tile, u.destination_tile);
@@ -39,7 +39,7 @@ public class Zombie : Monster
 
     public override Unit DecideTarget()
     {
-        return StaticSettings.GetClosestUnitTo(HeroManager.hero_manager.faction_units, this.destination_tile);
+        return StaticSettings.GetClosestUnitsTo(HeroManager.hero_manager.faction_units, this.destination_tile)[0];
     }
 
 
