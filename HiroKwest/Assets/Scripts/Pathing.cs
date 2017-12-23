@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -167,7 +167,7 @@ public class Pathing : MonoBehaviour
         Queue<Tile> path = OrthographicAStarPath(from, to);
         if (path == null)
         {
-            Debug.LogError("No possible path from " + from.transform.position + " to " + to.transform.position, to.transform);
+            //Debug.LogError("No possible path from " + from.transform.position + " to " + to.transform.position, to.transform);
             return StaticSettings.ERR_NO_POSSIBLE_PATH;
         }
         else

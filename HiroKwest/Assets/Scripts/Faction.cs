@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,6 +31,7 @@ public class Faction
 
     public virtual void AddUnitToFaction(Unit u)
     {
+        u.owner = this;
         faction_units.Add(u);
     }
 

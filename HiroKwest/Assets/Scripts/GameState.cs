@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +11,7 @@ public class GameState : MonoBehaviour
     public bool paused;
 
     Queue<Faction> factions_ready_to_go_this_turn = new Queue<Faction>();
-    List<Faction> factions = new List<Faction>();
+    public List<Faction> factions = new List<Faction>();
     public Faction current_players_turn;
 
     public Faction Hero_Faction;

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,6 +27,21 @@ public class UnitManager : MonoBehaviour
         // Check if the heroes are all dead
         if (HeroManager.hero_manager.faction_units.Count <= 0)
             GameState.game_state.Defeat();
+    }
+
+
+    // Recalculate potential movement now that this unit is gone
+    public void UnitDied(Unit u)
+    {
+        Debug.Log(u.name + " died");
+        RemoveUnitFromLists(u);
+
+        u.owner.MakeUnitsBlock();
+
+        foreach (Faction f in GameState.game_state.factions)
+        {
+            f.UnitMoved();
+        }
     }
 
 

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -42,6 +42,13 @@ public class Tile : MonoBehaviour
         tile_mask = UnitManager.unit_manager.Tile_Layermask.value;
         RaycastNeighbours();
 	}
+
+    public void AnimateTileEntering()
+    {
+        // Randomly choose a direction to fly in from
+        Animator anim = this.transform.GetComponentInChildren<Animator>();
+        anim.Play("Entrance1");// + Random.Range(0, 2));
+    }
 
 
     public void UnhighlightThisTile()

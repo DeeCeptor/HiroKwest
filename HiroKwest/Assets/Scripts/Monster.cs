@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,8 +13,20 @@ public class Monster : Unit
     {
         unit_card_parent = GraphicsManager.graphics_manager.enemy_unit_card_holder;
 
+        //FirstTimeSetupMonster();
+
         base.Start();
     }
+
+
+    public void FirstTimeSetupMonster()
+    {
+        gameObject.SetActive(true);
+        transform.parent = null;
+
+        GameState.game_state.Enemy_Faction.AddUnitToFaction(this);
+    }
+
 
     public virtual void PerformAITurn()
     {
@@ -70,6 +82,10 @@ public class Monster : Unit
     public override void SetPath(Queue<Tile> trail)
     {
         base.SetPath(trail);
+        if (owner == null)
+        {
+            Debug.LogError("owner null setpath", this.gameObject);
+        }
         this.owner.UnitMoved();
         this.moved_once = true;
         ActionPerformed(1);
@@ -88,7 +104,7 @@ public class Monster : Unit
             {
                 if (!neighbour.tile_occupied)
                 {
-                    Debug.LogError("GetTilesAdjacentToHeroes " + u.name);
+                    //Debug.LogError("GetTilesAdjacentToHeroes " + u.name);
                     // Record which tiles are adjacent to which heroes
                     if (!heroes_within_range_this_turn.ContainsKey(u))
                         heroes_within_range_this_turn.Add(u, new List<Tile>());

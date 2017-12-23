@@ -1,12 +1,17 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActivateRoom : MonoBehaviour {
+public class ActivateRoom : MonoBehaviour
+{
+    public GameObject Room_Parent;
 
 
     private void Awake()
     {
+        if (Room_Parent != null)
+            Room_Parent.SetActive(false);
+
         Monster[] monsters = this.GetComponentsInChildren<Monster>(true);
         foreach (Monster m in monsters)
         {
@@ -16,9 +21,9 @@ public class ActivateRoom : MonoBehaviour {
     void Start () {
 		
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+
+    void Update () {
 		
 	}
 
@@ -33,13 +38,24 @@ public class ActivateRoom : MonoBehaviour {
     }
     public void Activate_Room()
     {
-        // Activate all monsters here
+        // Make tiles appear
+        Room_Parent.gameObject.SetActive(true);
+        Tile[] tiles = Room_Parent.GetComponentsInChildren<Tile>();
+        foreach (Tile t in tiles)
+        {
+            t.AnimateTileEntering();
+        }
+        
+
+        // Rebuild graph
+        
+
+
+        // Activate all monsters
         Monster[] monsters = this.GetComponentsInChildren<Monster>(true);
         foreach (Monster m in monsters)
         {
-            m.gameObject.SetActive(true);
-            m.transform.parent = null;
-            GameState.game_state.Enemy_Faction.AddUnitToFaction(m);
+            m.FirstTimeSetupMonster();
         }
 
         Destroy(this.gameObject);

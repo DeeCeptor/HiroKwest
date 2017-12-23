@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -150,7 +150,8 @@ public class Unit : FollowPath
 
         Debug.Log(this.name + " was killed!");
         GraphicsManager.graphics_manager.PlaySound(death_sound);
-        UnitManager.unit_manager.RemoveUnitFromLists(this);
+        UnitManager.unit_manager.UnitDied(this);
+
         Destroy(this.gameObject);
     }
 
